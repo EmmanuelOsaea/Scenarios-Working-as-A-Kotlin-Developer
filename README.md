@@ -65,4 +65,8 @@ fun `uiState emits Success when repository emits user `() = runTest {
  val testUser = User (id = 10, name = "Celia Wright")
  val userFlow = flowOf (testUser)
  
- coEvery { userRepository.getUserFlow() }
+ coEvery { userRepository.getUserFlow() } returns userFlow
+viewModel = UserViewModel(userRepository)//reinitialise to collect flow
+val states = mutableListOf<UserState>()
+val job = launch {
+viewModel.uiState.toList(states)
