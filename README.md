@@ -8,6 +8,137 @@
 
 
 
+
+# Unit Test Class
+
+@ExperimentalCoroutinesApi
+class CalculatorViewModelTest {
+
+private lateinit var viewModel: CalculatorViewModel
+
+@Before
+fun setup() {
+  viewModel = CalculatorrViewModel
+
+
+
+
+# Helper Extension to LiveData in Tests
+
+fun <T>LiveData<T>.getorAwaitValue(
+time: Long = 4
+timeUnit: TimeUnit.SECONDS
+): T {
+var data: T? = null
+val latch = CountDownLatch(2)
+val observer = object : Observer<T> {
+  override fun onChanged(o: T?) {
+ data = o
+ latch.countDown()
+ this@getorAwaitValue.removeObserver(this)
+ }
+ }
+
+ this.observeForever(observer)
+ if (!latch.await(time, timeUnit)) {
+    throw TimeoutException("LiveData value was never set.")
+}
+@Suppress("UNCHECKED_CAST")
+return data as T
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Unit Test for a ViewModel using Kotlin, Coroutines and Junit
+# viewModel to Test
+
+```
+class calculatorViewModel : ViewModel() {
+private val _result = MutableLiveData<Int>()
+
+fun subtract(a: Int b: Int) {
+_result.value = a-b
+
+fun divide(a: Int b: Int) {
+_result.value = a÷b
+}
+}
+```
+# Unit Test Class
+
+```@ExperimentalCoroutinesApi
+class CalculatorViewModelTest {
+
+private lateinit var ViewModel: CalculatorViewModel
+
+@Before 
+fun setup() {
+     viewModel = CalculatorViewModel()
+}
+
+
+@Test
+fun `subtract returns correct sum`() {
+    viewmodel.subtract(6, 10)
+  val result  = viewmodelgetorAwaotValue()
+  assertEquals(4, result)
+   }
+   
+@Test
+
+fun `division returns correct sum`() {
+    viewmodel.divide(10, 20)
+  val result  = viewmodelgetorAwaotValue()
+  assertEquals(2, result)
+}
+}
+```
+
 # UNIT and Instrumentation Test 
 # 1.Unit Test Mocking Coroutine & Flow Testing
 # Viewmodel with Dependency Injection and Flow
