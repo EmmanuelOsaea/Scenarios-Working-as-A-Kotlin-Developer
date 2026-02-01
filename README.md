@@ -1,16 +1,5 @@
-
-
-
-
-
-
-
-
-
-
-
 # Unit Test Class
-
+```
 @ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
 
@@ -18,13 +7,31 @@ private lateinit var viewModel: CalculatorViewModel
 
 @Before
 fun setup() {
-  viewModel = CalculatorrViewModel
+  viewModel = CalculatorViewModel()
+  }
+
+  @Test 
+ fun `subtract returns correct sum`() {
+    viewModel.subtract(5,20)
+   val result = viewModel.result.getorAwaitValue()
+assertEquals(15, result)
+}
+
+@Test 
+ fun `division returns correct sum`() {
+    viewModel.divide(5,20)
+   val result = viewModel.result.getorAwaitValue()
+assertEquals(4, result)
+}
+````
+
+
 
 
 
 
 # Helper Extension to LiveData in Tests
-
+```
 fun <T>LiveData<T>.getorAwaitValue(
 time: Long = 4
 timeUnit: TimeUnit.SECONDS
@@ -46,52 +53,7 @@ val observer = object : Observer<T> {
 @Suppress("UNCHECKED_CAST")
 return data as T
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 # Unit Test for a ViewModel using Kotlin, Coroutines and Junit
