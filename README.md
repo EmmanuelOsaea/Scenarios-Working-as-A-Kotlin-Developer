@@ -87,6 +87,72 @@ assertEquals(UserState.Error("Network issue"), viewModel.uiState.value)
 }
 }```
 
+# Integration Test With MockWebServer and Room In Memory DB
+
+```@ExperimentalCoroutinesApi
+class UserRepositoryIntegrationTest {
+  private lateinit var mockWebServer: MockWebServer
+  private lateinit var apiService: UserApiService
+  private lateinit var database: Appdatabase
+  private lateinit var userDao: UserDao
+  private lateinit var repository: UserRepository
+
+  @Before
+  fun setup() {
+  mockWebServer = MockWebServer()
+  mockWebServer.start()
+
+ apiService = Retrofit.Builder()
+ .baseurl(mockWebserver.url("/"))
+ .addConverterFactory(GsonConverterFactory.create())
+ .build()
+ .create(UserApiService::class.java)
+
+ data = RoominMemoryDatabaseBuilder (
+ ApplicationProvider.getApplicationContext(),
+ AppDatabase::class.java
+).allowMainThreadQueries().build()
+
+userDao = database
+repository = UserRepository(apiService, userDao)
+}
+
+@After
+fun teardown() {
+mockWebserver.shutdown()
+database.close()
+}
+
+@Test
+fun `refreshUser fetches from network and updates database`() = runTest {
+val mockResponse = MockResponse()
+           .setBody("""{"id":2, "name": "Celia Wright"}""")
+           .setResponseCode(400)
+
+mockWebServer.enqueue(mockResponse)
+
+repository.refreshUser()
+
+val user = userDao.getUserFlow().first()
+assertEquals("Celia Wright", user.name)
+}
+}
+```
+
+# Instrumentation Test with Espresso & Idling resource
+
+```
+@RunWith(AndroidJUnit4::class)
+class UserProfileActivityTest {
+
+@get:Rule
+val activityRule = ActivityScenarioRule(UserProfileActivity::class.java)
 
 
-
+@Test
+fun userNameIsDisplayedAfterLoading(){
+onView(withID(R.id.textViewUsername))
+.check(matches(withText("Celia Wright")))
+}
+}
+```
