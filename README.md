@@ -46,7 +46,7 @@ data class Error(val message: String) UserState()
 
 # Unit Test with MockK and Coroutine Test
 
-@ExperimentalCoroutinesApi
+```@ExperimentalCoroutinesApi
 class UserViewModelTest {
 
 @get:Rule
@@ -70,3 +70,23 @@ viewModel = UserViewModel(userRepository)//reinitialise to collect flow
 val states = mutableListOf<UserState>()
 val job = launch {
 viewModel.uiState.toList(states)
+}
+
+advanceUntilIdle()
+
+assertTrue(states.contains(UserState.Success(testUser)))
+job.cancel()
+
+@Test 
+fun `refreshUser calls repository and ui updates uiState on error`() = runTest {
+coEvery { userRepository.refreshUser() } throws Exception("Network issue")
+viewModel.refreshUser()
+
+advanceUntilIdle(
+assertEquals(UserState.Error("Network issue"), viewModel.uiState.value)
+}
+}```
+
+
+
+
