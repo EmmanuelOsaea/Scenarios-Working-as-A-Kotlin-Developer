@@ -1,3 +1,92 @@
+
+
+
+
+
+# Reflecting 5years with Kotlin Coroutines and Flow
+
+# 1.Data Layer: Room with Flow
+
+@Entity(tableName = "hub_docs") 
+data class Hubdoc(
+@promary key autogeberate
+val title: String,
+val isDone: Boolean = false
+}
+
+@Dao
+interface Hubdoc {
+@Query("SELECT * FROM Hub_docs ORDER BY id DESC")
+fun getAllHubdocs(): Flow<List<HubDoc>>
+
+@Insert(onConflict = onConflictStrategy.REPLACE)
+suspend fun insert (Hubdoc: doc)
+
+@Update
+suspend fun update (Hubdoc: doc)
+
+@Delete
+suspend fun delete (Hub: doc)
+}
+
+
+# 2.Repository Layer: Combining Local DB and Network Sync
+
+
+
+
+
+
+# 3.ViewModelLayer: StateFlow  and SharedFlow for UI State and Events
+
+
+
+
+# 4.UI layer: Collecting Stateflow and SharedFlow with Lifecycle Awareness
+
+class HubActivity: AppCompatActivity() {
+
+private lateinit var viewModel.HubViewModel
+private lateinit var adapter.HubAdapter
+
+
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+setContentView(R.layout.activity_hub) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Unit Test Class
 ```
 @ExperimentalCoroutinesApi
