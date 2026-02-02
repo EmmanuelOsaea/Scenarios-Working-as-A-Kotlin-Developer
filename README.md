@@ -235,17 +235,6 @@ suspend fun delete (Hub: doc)
 }
 
 
-# 2.Repository Layer: Combining Local DB and Network Sync
-
-
-
-
-
-
-# 3.ViewModelLayer: StateFlow  and SharedFlow for UI State and Events
-
-
-
 
 # 4.UI layer: Collecting Stateflow and SharedFlow with Lifecycle Awareness
 
@@ -268,26 +257,6 @@ findViewById<RecyclerView>(R.id.recyclerView).apply {
 thisadapter = this@HubActivity.adapter
 layoutManager = LinearLayoutManager(this@HubActivity)
 }
-
-
-
-
-
-
-
-
-
-
-
-# Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow
-
-
-
-
-
-
-
-
 
 
 
