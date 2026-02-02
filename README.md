@@ -1,4 +1,279 @@
 
+# Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow
+# 1.Define Retrofit Api Interface
+```
+interface HubApiService {
+
+@GET("hubs")
+suspend fun fetchHubs(); List<HubDoc>
+
+@GET("hubs")
+suspend fun syncHub(@Body hub: HubDoc): Response<Unit>
+
+@GET("hubs/{id}")
+suspend fun deleteHub(@Path("id") id: Int): Response<Unit>
+}
+```
+
+# 2.Retrofit Setup
+
+```
+val retrofit =  Retrofit.Builder()
+.baseUrl ("https://api.example.com/")//place my api link here
+.addConverterFactory(GsonConverterFactory.create())
+.build()
+
+val hubApiService = retrofit.create(HubApiService::class.java)
+
+```
+
+# 3.Repository with Network and Local Data Integration
+
+class HubRepository{
+private val hubDao: HubDao,
+private val apiService: HubApiService
+) {
+
+//fetch hubs from network and update local DB
+suspend fun refreshHubs() {
+try {
+val remoteHubs = apiService.fetchHubs()
+//update local db with remote data
+remoteHubs.forEach { hubDao.insert(it)}
+} catch (e: Exception) {
+//Handle network error
+throw e
+}
+}
+
+// Expose local DB hubs as Flow
+val hubsFlow: Flow<List<HubsDocs>>
+
+suspend fun addHub(hub: HubDocs) {
+hubdao.insert(hub)
+try {
+    apiService.syncHub(hub)
+} catch (e: Exception) {
+// Handle sync failure
+}
+}
+
+}
+# 4. ViewModel Example with Refresh Error Handling
+
+```class HubViewModel(private val repository: HubRepository) : ViewModel() {
+
+private val _uistate = MutableStateFlow<List<HubDoc>>(emptyList())
+val _uiState: StateFlow<List<HubItem>> = _uiState.asStateFlow()
+
+private val _uiEvent = MutableSharedFlow<String>()
+val _uiEvent: SharedFlow<String> = _uiEvents.asSharedFlow()
+
+init {
+viewModelScope.launch {
+repository.hubsFlow 
+ .catch { e -> _uiEvents.emit("Error loading hubs: ${e.message}") }
+.collect { hubs -> _uiState.value = hubs }
+}
+}```
+
+# 5. UI Layer Triggering Refresh
+
+```swipeRefreshLayout.setOnRefreshListener {
+viewModel.refreshHubs()
+swipeRefreshLayout.isRefreshing = false
+}
+```
+
+
+
+
+
+
+# Unit Test Class
+```
+@ExperimentalCoroutinesApi
+class CalculatorViewModelTest {
+
+private lateinit var viewModel: CalculatorViewModel
+
+@Before
+fun setup() {
+  viewModel = CalculatorViewModel()
+  }
+
+  @Test 
+ fun `subtract returns correct sum`() {
+    viewModel.subtract(5,20)
+   val result = viewModel.result.getorAwaitValue()
+assertEquals(15, result)
+}
+
+@Test 
+ fun `division returns correct sum`() {
+    viewModel.divide(5,20)
+   val result = viewModel.result.getorAwaitValue()
+assertEquals(4, result)
+}
+````
+
+
+
+
+# Helper Extension to Observe LiveData in Tests
+```
+fun <T>LiveData<T>.getorAwaitValue(
+time: Long = 4
+timeUnit: TimeUnit.SECONDS
+): T {
+var data: T? = null
+val latch = CountDownLatch(2)
+val observer = object : Observer<T> {
+  override fun onChanged(o: T?) {
+ data = o
+ latch.countDown()
+ this@getorAwaitValue.removeObserver(this)
+ }
+ }
+
+ this.observeForever(observer)
+ if (!latch.await(time, timeUnit)) {
+    throw TimeoutException("LiveData value was never set.")
+}
+@Suppress("UNCHECKED_CAST")
+return data as T
+}
+```
+
+# Instrumemtation Test for an Activity using Espresso
+
+class LogoutActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+setContentView(R.layout.activity_logout)
+
+val logoutButton = findViewById <Button>(R.id.buttonLogout)
+val usernameInput = findViewById <Button>(R.id.buttonLogout)
+val passwordInput = findViewById <Button>(R.id.buttonLogout)
+
+logoutButton.setOnclickListener {
+val usernameInput usernameInput.text.toString()
+val passwordInput passwordInput.text.toString()
+if (username == "user" && password == "pass") {
+ Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show
+ } else {
+ Toast.makeText(this, "Logout failed", Toast.LENGTH_SHORT).show
+}
+}
+}
+}
+
+
+# Instrumemtation Test Class
+
+```@Runwith(AndroidJUnit4::class)
+class LogoutActivity {
+
+@get:Rule
+value activityRule = ActivityScenarioRule(LogoutActivity::class.java)
+
+@Test
+fun logoutSuccess_showsSuccessToast()
+onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
+onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
