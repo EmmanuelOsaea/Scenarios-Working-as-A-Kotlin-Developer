@@ -24,11 +24,11 @@ val retrofit =  Retrofit.Builder()
 .build()
 
 val hubApiService = retrofit.create(HubApiService::class.java)
-
 ```
 
 # 3.Repository with Network and Local Data Integration
 
+```
 class HubRepository{
 private val hubDao: HubDao,
 private val apiService: HubApiService
@@ -45,6 +45,7 @@ remoteHubs.forEach { hubDao.insert(it)}
 throw e
 }
 }
+```
 
 // Expose local DB hubs as Flow
 val hubsFlow: Flow<List<HubsDocs>>
@@ -75,7 +76,8 @@ repository.hubsFlow
  .catch { e -> _uiEvents.emit("Error loading hubs: ${e.message}") }
 .collect { hubs -> _uiState.value = hubs }
 }
-}```
+}
+```
 
 # 5. UI Layer Triggering Refresh
 
@@ -180,100 +182,7 @@ value activityRule = ActivityScenarioRule(LogoutActivity::class.java)
 fun logoutSuccess_showsSuccessToast()
 onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
 onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 
@@ -285,7 +194,7 @@ onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboa
 @Entity(tableName = "hub_docs") 
 data class Hubdoc(
 @promary key autogeberate
-val title: String,
+title: String,
 val isDone: Boolean = false
 }
 
@@ -421,7 +330,7 @@ return data as T
 }
 ```
 
-# Instrumemtation Test for an Activity using Espresso
+# Instrumentation Test for an Activity using Espresso
 
 class LogoutActivity : AppCompatActivity() {
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -444,7 +353,7 @@ if (username == "user" && password == "pass") {
 }
 
 
-# Instrumemtation Test Class
+# Instrumentation Test Class
 
 ```@Runwith(AndroidJUnit4::class)
 class LogoutActivity {
