@@ -1,7 +1,7 @@
 # Github Workflow
 ( .github/workflows/android.ci-cd.yml )
 
-name:
+name: Android CI/CD on Windows
 
 on:
 push:
@@ -16,7 +16,37 @@ branches
 job:
 build-test:
 name: Build and Test
-runs-on: 
+runs-on: windows-2022
+env:
+JAVA_HOME: ${{ env.JAVA_HOME}}
+
+steps:
+- name: Checkout code
+  uses: actions/checkout@v3
+
+- name: Set up JDK 11
+- uses:
+- with:
+     distribution: 'temurin'
+      java-version: '11'
+      cache: 'gradle'
+- name:
+  run:
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -66,7 +96,6 @@ remoteHubs.forEach { hubDao.insert(it)}
 throw e
 }
 }
-```
 
 // Expose local DB hubs as Flow
 val hubsFlow: Flow<List<HubsDocs>>
@@ -81,6 +110,7 @@ try {
 }
 
 }
+```
 # 4. ViewModel Example with Refresh Error Handling
 
 ```class HubViewModel(private val repository: HubRepository) : ViewModel() {
@@ -169,7 +199,7 @@ return data as T
 ```
 
 # Instrumemtation Test for an Activity using Espresso
-
+```
 class LogoutActivity : AppCompatActivity() {
 override fun onCreate(savedInstanceState: Bundle?) {
 setContentView(R.layout.activity_logout)
@@ -189,7 +219,7 @@ if (username == "user" && password == "pass") {
 }
 }
 }
-
+```
 
 # Instrumemtation Test Class
 
@@ -214,7 +244,7 @@ onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboa
 
 @Entity(tableName = "hub_docs") 
 data class Hubdoc(
-@promary key autogeberate
+@promary key autogenerate
 title: String,
 val isDone: Boolean = false
 }
@@ -237,7 +267,7 @@ suspend fun delete (Hub: doc)
 
 
 # 4.UI layer: Collecting Stateflow and SharedFlow with Lifecycle Awareness
-
+```
 class HubActivity: AppCompatActivity() {
 
 private lateinit var viewModel.HubViewModel
@@ -257,7 +287,7 @@ findViewById<RecyclerView>(R.id.recyclerView).apply {
 thisadapter = this@HubActivity.adapter
 layoutManager = LinearLayoutManager(this@HubActivity)
 }
-
+```
 
 
 
