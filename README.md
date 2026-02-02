@@ -63,15 +63,22 @@ val logoutButton = findViewById <Button>(R.id.buttonLogout)
 val usernameInput = findViewById <Button>(R.id.buttonLogout)
 val passwordInput = findViewById <Button>(R.id.buttonLogout)
 
-logoutButton.
+logoutButton.setOnclickListener {
 val usernameInput usernameInput.text.toString()
 val passwordInput passwordInput.text.toString()
-
-
+if (username == "user" && password == "pass") {
+ Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show
+ } else {
+ Toast.makeText(this, "Logout failed", Toast.LENGTH_SHORT).show
+}
+}
+}
+}
 
 
 # Instrumemtation Test Class
-@Runwith(AndroidJUnit4::class)
+
+```@Runwith(AndroidJUnit4::class)
 class LogoutActivity {
 
 @get:Rule
@@ -96,12 +103,13 @@ onView(withText("Logout Failed"))
 .inroot(ToastMatcher())
 .check(matches(isDisplayed()))
 }
-
+```
 
 
 
 # ToastMatcher Helper for Espresso
 
+```
 class ToastMatcher TypesafeMatcher<Root>() {
 override fun describeTo( description : Description) {
 description.appendtext("is toast")
@@ -117,7 +125,7 @@ if (type == WindowManager.LayoutParams.TYPE_TOAST)
 }
 }
 return false
-
+```
 
 
 
