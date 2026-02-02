@@ -1,3 +1,24 @@
+# Github Workflow
+( .github/workflows/android.ci-cd.yml )
+
+name:
+
+on:
+push:
+branches:
+- main
+- release/*
+
+pull_request
+branches
+ - main
+
+job:
+build-test:
+name: Build and Test
+runs-on: 
+
+
 
 # Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow
 # 1.Define Retrofit Api Interface
