@@ -54,11 +54,15 @@ override fun onCreate(savedInstanceState: Bundle?) {
 super.onCreate(savedInstanceState)
 setContentView(R.layout.activity_hub) 
 
+adapter = HubAdapter(
+ onToggleDone = { hub -> viewModel.toggleHubDone(hub) },
+onDelete = { hub -> viewModel.toggleHub(hub) }
+)
 
-
-
-
-
+findViewById<RecyclerView>(R.id.recyclerView).apply {
+thisadapter = this@HubActivity.adapter
+layoutManager = LinearLayoutManager(this@HubActivity)
+}
 
 
 
