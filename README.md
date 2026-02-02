@@ -28,9 +28,7 @@ assertEquals(4, result)
 
 
 
-
-
-# Helper Extension to LiveData in Tests
+# Helper Extension to Observe LiveData in Tests
 ```
 fun <T>LiveData<T>.getorAwaitValue(
 time: Long = 4
@@ -54,6 +52,73 @@ val observer = object : Observer<T> {
 return data as T
 }
 ```
+
+# Instrumemtation Test for an Activity using Espresso
+
+class LogoutActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+setContentView(R.layout.activity_logout)
+
+val logoutButton = findViewById <Button>(R.id.buttonLogout)
+val usernameInput = findViewById <Button>(R.id.buttonLogout)
+val passwordInput = findViewById <Button>(R.id.buttonLogout)
+
+logoutButton.
+val usernameInput usernameInput.text.toString()
+val passwordInput passwordInput.text.toString()
+
+
+
+
+# Instrumemtation Test Class
+@Runwith(AndroidJUnit4::class)
+class LogoutActivity {
+
+@get:Rule
+value activityRule = ActivityScenarioRule(LogoutActivity::class.java)
+
+@Test
+fun logoutSuccess_showsSuccessToast()
+onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
+onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
+
+onView(withText("Logout Succesful"))
+.inroot(ToastMatcher())
+.check(matches(isDisplayed()))
+}
+
+@Test
+fun logoutFailure_showsFailureToast()
+onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
+onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
+
+onView(withText("Logout Failed"))
+.inroot(ToastMatcher())
+.check(matches(isDisplayed()))
+}
+
+
+
+
+# ToastMatcher Helper for Espresso
+
+class ToastMatcher TypesafeMatcher<Root>() {
+override fun describeTo( description : Description) {
+description.appendtext("is toast")
+}
+
+public override func matchesSafely(root: Root): Boolean {
+val type = root.windowLayoutParams.TYPE_TOAST) {
+if (type == WindowManager.LayoutParams.TYPE_TOAST)
+ val windowToken = root.decorview.windowToken
+ val appToken = root.decorview.appWindowToken
+ if (windowToken == appToken) {
+ return true
+}
+}
+return false
+
+
 
 
 # Unit Test for a ViewModel using Kotlin, Coroutines and Junit
