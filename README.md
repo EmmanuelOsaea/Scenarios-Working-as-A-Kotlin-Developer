@@ -30,22 +30,35 @@ steps:
      distribution: 'temurin'
       java-version: '11'
       cache: 'gradle'
-- name:
-  run:
-  
+- name: Display Java version & JAVA_HOME
+  run: |
+  java -version
+  echo %JAVA_HOME%
 
+    Grant execute permission gradlew(windows doesn't often request this)
+     echo "No chmod required on Windows"
 
+    Build Debug APK
+    .\gradlew.bat assembleDebug
 
+   Run Unit Tests
+   .\gradlew.bat testDebugUnitTest
 
+   Run Instrumentation Tests
+   .\gradlew.bat connectedDebugAndroidTest
 
+  name Upload Test Reports
+  uses actions/upload-artifact@v3
+  with  
 
+name Upload Code Coverage
+uses actions/upload-artifact@v3
+ with
+ name: coverage-report
+ path: app\build\reports\jacoco
 
-
-
-
-
-
-
+-name Deployment step placeholder
+-run echo "HubDocs"
 
 
 
