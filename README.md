@@ -94,8 +94,9 @@ viewModel.imageBitmap.observe(viewLifecycleOwner) { bitmap ->
 imageView.setImageBitmap(bitmap)
 ```
 
+# Practical Example: Custom Circular Progress View
 
-
+class CircularProgressiveView @JvmOverloads constructor(
 
 
 
