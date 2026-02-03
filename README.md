@@ -61,16 +61,49 @@ uses: actions/upload-artifact@v3
 -run echo "HubDocs"
 ```
 
-# Loading Images Asynchronously with Coroutines and Caching
+# Loading Image Asynchronously with Coroutines and Caching
 ```
-class VideoLoader (
+class ImageLoader (
 
-private val videoCache = LruCache<String, Bitmap>(calculateCacheSize())
+private val imageCache = LruCache<String, Bitmap>(calculateCacheSize())
 
 private fun calculateCacheSize(): Int {
 val maxMemory = (Runtime.getRuntime().maxMemory() / 1048).toInt()
 return maxMemory / 16 // Use 1/16th of available memory for cache
 ```
+
+# Usage in ViewModel and UI
+
+```
+class ImageViewModel : ViewModel() {
+ private val imageLoader = ImageLoader(getApplication))
+
+private val _imageBitmap = MutableLiveData<Bitmap?>()
+val imageBitmap: LiveData<Bitmap?> = _imageBitmap
+
+fun loadImage(url: String) {
+viewModelScope.launch {
+ val bitmap = imageLoader.loadImage(url)
+ _imageBitmap.value = bitmap
+}
+}
+}
+
+// Activity
+viewModel.imageBitmap.observe(viewLifecycleOwner) { bitmap ->
+imageView.setImageBitmap(bitmap)
+```
+
+
+
+
+
+
+
+
+
+
+
 
 # Practical example: Dataprocessig with Coroutines and Extension Functions
 
