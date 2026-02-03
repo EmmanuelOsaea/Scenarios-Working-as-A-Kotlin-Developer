@@ -276,7 +276,7 @@ return data as T
 }
 ```
 
-# Instrumemtation Test for an Activity using Espresso
+# Instrumentation Test for an Activity using Espresso
 
 ```
 class LogoutActivity : AppCompatActivity() {
@@ -300,7 +300,7 @@ if (username == "user" && password == "pass") {
 }
 ```
 
-# Instrumemtation Test Class
+# Instrumentation Test Class
 
 ```@Runwith(AndroidJUnit4::class)
 class LogoutActivity {
@@ -627,11 +627,12 @@ viewModel.refreshUser()
 advanceUntilIdle(
 assertEquals(UserState.Error("Network issue"), viewModel.uiState.value)
 }
-}```
+}
+```
 
 # Integration Test With MockWebServer and Room In Memory DB
-
-```@ExperimentalCoroutinesApi
+```
+@ExperimentalCoroutinesApi
 class UserRepositoryIntegrationTest {
   private lateinit var mockWebServer: MockWebServer
   private lateinit var apiService: UserApiService
@@ -678,8 +679,7 @@ repository.refreshUser()
 val user = userDao.getUserFlow().first()
 assertEquals("Celia Wright", user.name)
 }
-}
-```
+}```
 
 # Instrumentation Test with Espresso & Idling resource
 
