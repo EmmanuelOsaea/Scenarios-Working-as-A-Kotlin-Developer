@@ -72,24 +72,6 @@ val maxMemory = (Runtime.getRuntime().maxMemory() / 1048).toInt()
 return maxMemory / 16 // Use 1/16th of available memory for cache
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Practical example: Dataprocessig with Coroutines and Extension Functions
 
 ```
@@ -320,7 +302,7 @@ onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboa
 # Reflecting 5years with Kotlin Coroutines and Flow
 
 # 1.Data Layer: Room with Flow
-
+```
 @Entity(tableName = "hub_docs") 
 data class Hubdoc(
 @promary key autogenerate
@@ -342,7 +324,7 @@ suspend fun update (Hubdoc: doc)
 @Delete
 suspend fun delete (Hub: doc)
 }
-
+```
 
 
 # 4.UI layer: Collecting Stateflow and SharedFlow with Lifecycle Awareness
@@ -430,7 +412,7 @@ return data as T
 ```
 
 # Instrumentation Test for an Activity using Espresso
-
+```
 class LogoutActivity : AppCompatActivity() {
 override fun onCreate(savedInstanceState: Bundle?) {
 setContentView(R.layout.activity_logout)
@@ -450,7 +432,7 @@ if (username == "user" && password == "pass") {
 }
 }
 }
-
+```
 
 # Instrumentation Test Class
 
@@ -679,7 +661,8 @@ repository.refreshUser()
 val user = userDao.getUserFlow().first()
 assertEquals("Celia Wright", user.name)
 }
-}```
+}
+```
 
 # Instrumentation Test with Espresso & Idling resource
 
