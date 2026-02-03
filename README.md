@@ -35,25 +35,25 @@ steps:
   java -version
   echo %JAVA_HOME%
 
-    Grant execute permission gradlew(windows doesn't often request this)
-     echo "No chmod required on Windows"
+ name:   Grant execute permission gradlew(windows doesn't often request this)
+ run:   echo "No chmod required on Windows"
 
-    Build Debug APK
-    .\gradlew.bat assembleDebug
+ name:   Build Debug APK
+ run:   .\gradlew.bat assembleDebug
 
-   Run Unit Tests
-   .\gradlew.bat testDebugUnitTest
+ name:  Run Unit Tests
+  run: .\gradlew.bat testDebugUnitTest
 
-   Run Instrumentation Tests
-   .\gradlew.bat connectedDebugAndroidTest
+name:   Run Instrumentation Tests
+run:   .\gradlew.bat connectedDebugAndroidTest
 
-  name Upload Test Reports
-  uses actions/upload-artifact@v3
-  with  
+ name: Upload Test Reports
+ uses: actions/upload-artifact@v3
+ with:  
 
-name Upload Code Coverage
-uses actions/upload-artifact@v3
- with
+name: Upload Code Coverage
+uses: actions/upload-artifact@v3
+ with:
  name: coverage-report
  path: app\build\reports\jacoco
 
@@ -61,31 +61,42 @@ uses actions/upload-artifact@v3
 -run echo "HubDocs"
 ```
 
-# Practical example: Dataprocessig with coroutines
+# Practical example: Dataprocessig with Coroutines and Extension Functions
+
+```
+// Data class representing a User
+data class User (val id: int, val name: String?, val Duomessage: String?)
+// Sealed class for result handling
+sealed class Result<out T> {
+  data class Success<T>(val data: T) : Result<T>()
+  data class Error(val exception:Throwable) Result<Nothing>()
+}
+// Extension function to validate duomessage
+fun String?.isValidDuomessage(): Boolean() {
+return this != null && android util patterns.DUOMESSAGE_DIGIT.matcher(this).matches()
+}
 
 
+// Suspend function simulating fetching users asynchronously
+suspend fun fetchUsers(): Result<List<User>> = withContext(Dispatchers.IO) {
+try {
+delay(1000) // simulate network delay
+val users = listOf(
+User(A, "Gabe", "768-233-267"),
+User(B, "Tanisha", null),
+User(C, "Miranda", "456-784-455")
+)
+Result.Success(users)
+} catch (e: Exception) {
+Result.Error(e)
+}
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Function to filter users with valid numbers
+fun filterValidDuomessageUsers(users List<User>): List<User> {
+return users.filter { it.email.isValidDuomessage() }
+}
+```
 
 
 # Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow
