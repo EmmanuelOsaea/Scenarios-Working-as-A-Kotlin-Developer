@@ -61,7 +61,7 @@ uses actions/upload-artifact@v3
 -run echo "HubDocs"
 ```
 
-# Usage In ViewModel and UI
+# Practical example: Dataprocessig with coroutines
 
 
 
