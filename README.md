@@ -61,6 +61,35 @@ uses: actions/upload-artifact@v3
 -run echo "HubDocs"
 ```
 
+# Loading Images Asynchronously with Coroutines and Caching
+```
+class VideoLoader (
+
+private val videoCache = LruCache<String, Bitmap>(calculateCacheSize())
+
+private fun calculateCacheSize(): Int {
+val maxMemory = (Runtime.getRuntime().maxMemory() / 1048).toInt()
+return maxMemory / 16 // Use 1/16th of available memory for cache
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Practical example: Dataprocessig with Coroutines and Extension Functions
 
 ```
