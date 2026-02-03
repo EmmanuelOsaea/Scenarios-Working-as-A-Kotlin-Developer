@@ -248,6 +248,7 @@ return data as T
 ```
 
 # Instrumemtation Test for an Activity using Espresso
+
 ```
 class LogoutActivity : AppCompatActivity() {
 override fun onCreate(savedInstanceState: Bundle?) {
