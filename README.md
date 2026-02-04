@@ -83,8 +83,9 @@ return maxMemory /
 # Usage in ViewModel and UI
 
 ```
-class VideoViewModel : ViewModel() {
- private val videoLoader = VideoLoader(getApplication))
+class VideoViewModel (application : Application)  AndroidViewModel(application) {
+
+ private val videoLoader = VideoLoader(application)
 
 private val _videoBitmap = MutableLiveData<Bitmap?>()
 val videoBitmap: LiveData<Bitmap?> = _videoBitmap
@@ -96,12 +97,21 @@ viewModelScope.launch {
 }
 }
 }
-
-// Activity
-viewModel.videoBitmap.observe(viewLifecycleOwner) { bitmap ->
-videoView.setVideoBitmap(bitmap)
 ```
 
+# Activity
+// Assuming i have a custom Videoview
+```
+viewModel.videoBitmap.observe(viewLifecycleOwner) { bitmap ->
+   if (bitmap != null) {
+videoView.setVideoBitmap(bitmap)
+} else {
+
+}
+}
+
+viewmodel.loadVideo("https://example.com/video.mp4") //Will include my video her
+```
 # Practical Example: Custom Circular Progress View
 ```
 class CircularProgressiveView @JvmOverloads constructor(
@@ -177,7 +187,7 @@ circularProgress.setProgress(86)
 
 
 
-# Practical example: Dataprocessig with Coroutines and Extension Functions
+# Practical example: Dataprocessing with Coroutines and Extension Functions
 
 ```
 // Data class representing a User
