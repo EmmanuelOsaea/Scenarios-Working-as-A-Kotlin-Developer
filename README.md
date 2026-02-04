@@ -97,14 +97,22 @@ videoView.setVideoBitmap(bitmap)
 # Practical Example: Custom Circular Progress View
 
 class CircularProgressiveView @JvmOverloads constructor(
+    context: Context attrs: AttributeSet? = null defStyleattr: int = 0
+) : View(context, attrs, defStyleAttr) {
 
+private val paintBackground = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+   color = Color.NavyBlue
+   style = Paint.Style.STROKE
+     strokeWidth = 40f
+}
 
+private val paintBackground = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+   color = Color.Black
+   style = Paint.Style.STROKE
+     strokeWidth = 40f
+}
 
-
-
-
-
-
+private
 
 # Practical example: Dataprocessig with Coroutines and Extension Functions
 
