@@ -1,4 +1,4 @@
-# Mobile CI/CD Pipeline for Android with Github Actions and Fastlane
+# Mobile CI/CD Pipeline for Android with Github Actions and Fastlane√
 
 # Github Workflow
 ( .github/workflows/android.ci-cd.yml )
@@ -11,56 +11,58 @@ branches:
 - main
 - release/*
 
-pull_request
-branches
+pull_request:
+branches:
  - main
 
 job:
 build-test:
 name: Build and Test
 runs-on: windows-2022
+
 env:
-JAVA_HOME: ${{ env.JAVA_HOME}}
+JAVA_HOME: ${{ env.JAVA_HOME }}
 
 steps:
 - name: Checkout code
   uses: actions/checkout@v3
 
 - name: Set up JDK 11
-- uses:
-- with:
+  uses: actions/setup-java@v3
+  with:
      distribution: 'temurin'
       java-version: '11'
       cache: 'gradle'
+
 - name: Display Java version & JAVA_HOME
   run: |
   java -version
   echo %JAVA_HOME%
 
- name:   Grant execute permission gradlew(windows doesn't often request this)
- run:   echo "No chmod required on Windows"
+- name:   Grant execute permission gradlew(windows does not often require this)
+  run:   echo "No chmod required on Windows"
 
- name:   Build Debug APK
- run:   .\gradlew.bat assembleDebug
+- name:   Build Debug APK
+  run:   .\gradlew.bat assembleDebug
 
- name:  Run Unit Tests
+- name:  Run Unit Tests
   run: .\gradlew.bat testDebugUnitTest
 
-name:   Run Instrumentation Tests
-run:   .\gradlew.bat connectedDebugAndroidTest
+- name:   Run Instrumentation Tests
+  run:   .\gradlew.bat connectedDebugAndroidTest
 
- name: Upload Test Reports
- uses: actions/upload-artifact@v3
- with:  
+- name: Upload Test Reports
+  uses: actions/upload-artifact@v3
+  with:  
 
-name: Upload Code Coverage
-uses: actions/upload-artifact@v3
- with:
- name: coverage-report
- path: app\build\reports\jacoco
+- name: Upload Code Coverage
+  uses: actions/upload-artifact@v3
+  with:
+   name: coverage-report
+   path: app\build\reports\jacoco
 
--name Deployment step placeholder
--run echo "HubDocs"
+- name Deployment step placeholder
+- run echo "HubDocs"
 ```
 
 # Loading Video Asynchronously with Coroutines and Caching
