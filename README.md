@@ -65,15 +65,19 @@ steps:
 - run echo "HubDocs"
 ```
 
-# Loading Video Asynchronously with Coroutines and Caching
+# Loading Video Asynchronously with Coroutines and Caching√
 ```
 class VideoLoader (
 
-private val videoCache = LruCache<String, Bitmap>(calculateCacheSize())
+private val videoCache = object : LruCache<String, Bitmap>(calculateCacheSize()) {
+override fun sizeOf(key:string value: Bitmap): Int {
+return value.byteCount / 1024 // size in kb
+}
+}
 
 private fun calculateCacheSize(): Int {
-val maxMemory = (Runtime.getRuntime().maxMemory() / 1048).toInt()
-return maxMemory / 16 // Use 1/16th of available memory for cache
+val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
+return maxMemory /
 ```
 
 # Usage in ViewModel and UI
