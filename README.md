@@ -61,11 +61,11 @@ uses: actions/upload-artifact@v3
 -run echo "HubDocs"
 ```
 
-# Loading Image Asynchronously with Coroutines and Caching
+# Loading Video Asynchronously with Coroutines and Caching
 ```
-class ImageLoader (
+class VideoLoader (
 
-private val imageCache = LruCache<String, Bitmap>(calculateCacheSize())
+private val videoCache = LruCache<String, Bitmap>(calculateCacheSize())
 
 private fun calculateCacheSize(): Int {
 val maxMemory = (Runtime.getRuntime().maxMemory() / 1048).toInt()
@@ -75,23 +75,23 @@ return maxMemory / 16 // Use 1/16th of available memory for cache
 # Usage in ViewModel and UI
 
 ```
-class ImageViewModel : ViewModel() {
- private val imageLoader = ImageLoader(getApplication))
+class VideoViewModel : ViewModel() {
+ private val videoLoader = VideoLoader(getApplication))
 
-private val _imageBitmap = MutableLiveData<Bitmap?>()
-val imageBitmap: LiveData<Bitmap?> = _imageBitmap
+private val _videoBitmap = MutableLiveData<Bitmap?>()
+val videoBitmap: LiveData<Bitmap?> = _videoBitmap
 
-fun loadImage(url: String) {
+fun loadVideo(url: String) {
 viewModelScope.launch {
- val bitmap = imageLoader.loadImage(url)
- _imageBitmap.value = bitmap
+ val bitmap = videoLoader.loadVideo(url)
+ _videoBitmap.value = bitmap
 }
 }
 }
 
 // Activity
-viewModel.imageBitmap.observe(viewLifecycleOwner) { bitmap ->
-imageView.setImageBitmap(bitmap)
+viewModel.videoBitmap.observe(viewLifecycleOwner) { bitmap ->
+videoView.setImageBitmap(bitmap)
 ```
 
 # Practical Example: Custom Circular Progress View
