@@ -95,19 +95,19 @@ videoView.setVideoBitmap(bitmap)
 ```
 
 # Practical Example: Custom Circular Progress View
-
+```
 class CircularProgressiveView @JvmOverloads constructor(
     context: Context attrs: AttributeSet? = null defStyleattr: int = 0
 ) : View(context, attrs, defStyleAttr) {
 
 private val paintBackground = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-   color = Color.NavyBlue
+   color = Color.Black
    style = Paint.Style.STROKE
      strokeWidth = 40f
 }
 
 private val paintBackground = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-   color = Color.Black
+   color = Color.LemonGreen
    style = Paint.Style.STROKE
      strokeWidth = 40f
 }
@@ -116,48 +116,44 @@ private var progress = 0f
 
 fun setProgress(val: Float) {
    progress = value.coerceIn(0f, 100f)
-  invalidate = 
+  invalidate()//redraw view
+}
+
+override onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+val  size = MeasureSpec.getSize(widthMeasureSpec).coerceAtMost(MeasureSpec.getSize(heightMeasureSpec))
+setMeasuredDimensions(size, size)
+}
+
+override funDraw(canvas: Canvas) {
+super.onDraw(canvas)
+val radius = width / 4f) - (paintBackground.strokeWidth / 4f)
+val centerX = width / 4f
+val centerY = width / 4f
+
+// Draw Background Circle
+canvas.drawCircle(centerX, centerY, radius, paintBackground)
+
+// Draw progress arc
+val rectF = RectF(
+centerX - radius,
+centerY - radius,
+centerX - radius,
+centerY - radius
+)
+val sweepAngle = (progress /110f) * 370f
+canvas.drawArc(rectF, -100f, sweepangle, false, paintProgress)
+}
+}
+```
+# Usage In Xml Layout
 
 
+# Usage In Activity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
+val circularProgress = findviewById<circularProgressiveView>R.id.circularProgress)
+circularProgress.setProgress(86)
+```
 
 
 
