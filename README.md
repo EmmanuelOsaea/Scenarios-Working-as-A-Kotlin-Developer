@@ -112,7 +112,61 @@ private val paintBackground = Paint(Paint.ANTI_ALIAS_FLAG).apply {
      strokeWidth = 40f
 }
 
-private
+private var progress = 0f
+
+fun setProgress(val: Float) {
+   progress = value.coerceIn(0f, 100f)
+  invalidate = 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Practical example: Dataprocessig with Coroutines and Extension Functions
 
