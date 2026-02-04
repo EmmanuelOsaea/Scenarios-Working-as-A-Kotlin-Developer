@@ -151,7 +151,7 @@ canvas.drawArc(rectF, -100f, sweepangle, false, paintProgress)
 <com.example.customviews.CircularProgressiveView
 android: id 
 android: layout_width="160dp"
-android: layout_height="150dp" />
+android: layout_height="160dp" />
 ```
 # Usage In Activity
 
