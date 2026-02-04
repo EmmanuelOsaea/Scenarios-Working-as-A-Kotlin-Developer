@@ -110,9 +110,9 @@ videoView.setVideoBitmap(bitmap)
 }
 }
 
-viewmodel.loadVideo("https://example.com/video.mp4") //Will include my video her
+viewmodel.loadVideo("https://example.com/video.mp4") //Will include my video here
 ```
-# Practical Example: Custom Circular Progress View
+# Practical Example: Custom Circular Progress View✓
 ```
 class CircularProgressiveView @JvmOverloads constructor(
     context: Context attrs: AttributeSet? = null defStyleattr: int = 0
@@ -144,9 +144,9 @@ setMeasuredDimensions(size, size)
 
 override funDraw(canvas: Canvas) {
 super.onDraw(canvas)
-val radius = width / 4f) - (paintBackground.strokeWidth / 4f)
-val centerX = width / 4f
-val centerY = width / 4f
+val radius = width / 2f) - (paintBackground.strokeWidth / 2f)
+val centerX = width / 2f
+val centerY = width / 2f
 
 // Draw Background Circle
 canvas.drawCircle(centerX, centerY, radius, paintBackground)
@@ -158,48 +158,41 @@ centerY - radius,
 centerX - radius,
 centerY - radius
 )
-val sweepAngle = (progress /110f) * 370f
-canvas.drawArc(rectF, -100f, sweepangle, false, paintProgress)
+val sweepAngle = (progress /100f) * 360f
+canvas.drawArc(rectF, -90f, sweepangle, false, paintProgress)
 }
 }
 ```
-# Usage In Xml Layout
+# Usage In Xml Layout √
 
 ```
 <com.example.customviews.CircularProgressiveView
-android: id 
+android: id= "@+id/circularProgress"
 android: layout_width="160dp"
 android: layout_height="160dp" />
 ```
-# Usage In Activity
+# Usage In Activity√
 
 ```
-val circularProgress = findviewById<circularProgressiveView>R.id.circularProgress)
+val circularProgress = findviewById<CircularProgressiveView>(R.id.circularProgress)
 circularProgress.setProgress(86)
 ```
 
 
 
-
-
-
-
-
-
-
-# Practical example: Dataprocessing with Coroutines and Extension Functions
+# Practical example: Dataprocessing with Coroutines and Extension Functions✓
 
 ```
 // Data class representing a User
-data class User (val id: int, val name: String?, val Duomessage: String?)
+data class User (val id: int, val name: String?, val duomessage: String?)
 // Sealed class for result handling
 sealed class Result<out T> {
   data class Success<T>(val data: T) : Result<T>()
   data class Error(val exception:Throwable) Result<Nothing>()
 }
 // Extension function to validate duomessage
-fun String?.isValidDuomessage(): Boolean() {
-return this != null && android util patterns.DUOMESSAGE_DIGIT.matcher(this).matches()
+fun String?.isValidDuomessage(): Boolean {
+return this != null && android.util.Patterns.PHONE.matcher(this).matches()
 }
 
 
@@ -208,9 +201,9 @@ suspend fun fetchUsers(): Result<List<User>> = withContext(Dispatchers.IO) {
 try {
 delay(1000) // simulate network delay
 val users = listOf(
-User(A, "Gabe", "768-233-267"),
-User(B, "Tanisha", null),
-User(C, "Miranda", "456-784-455")
+User(1, "Gabe", "768-233-267"),
+User(2, "Tanisha", null),
+User(3, "Miranda", "456-784-455")
 )
 Result.Success(users)
 } catch (e: Exception) {
@@ -218,15 +211,15 @@ Result.Error(e)
 }
 }
 
-// Function to filter users with valid numbers
-fun filterValidDuomessageUsers(users List<User>): List<User> {
-return users.filter { it.email.isValidDuomessage() }
+// Function to filter users with duomessage
+fun filterValidDuomessageUsers(users: List<User>): List<User> {
+return users.filter { it.duomessage.isValidDuomessage() }
 }
 ```
 
 
-# Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow
-# 1.Define Retrofit Api Interface
+# Integrating & Consuming RESTful Apis in Android Kotlin Coroutines and Flow✓
+# 1.Define Retrofit Api Interface✓
 ```
 interface HubApiService {
 
@@ -241,18 +234,18 @@ suspend fun deleteHub(@Path("id") id: Int): Response<Unit>
 }
 ```
 
-# 2.Retrofit Setup
+# 2.Retrofit Setup✓
 
 ```
 val retrofit =  Retrofit.Builder()
-.baseUrl ("https://api.example.com/")//place my api link here
+.baseUrl("https://api.example.com/")//place my api link here
 .addConverterFactory(GsonConverterFactory.create())
 .build()
 
 val hubApiService = retrofit.create(HubApiService::class.java)
 ```
 
-# 3.Repository with Network and Local Data Integration
+# 3.Repository with Network and Local Data Integration√
 
 ```
 class HubRepository{
@@ -265,7 +258,7 @@ suspend fun refreshHubs() {
 try {
 val remoteHubs = apiService.fetchHubs()
 //update local db with remote data
-remoteHubs.forEach { hubDao.insert(it)}
+remoteHubs.forEach { hubDao.insert(it) }
 } catch (e: Exception) {
 //Handle network error
 throw e
@@ -273,10 +266,10 @@ throw e
 }
 
 // Expose local DB hubs as Flow
-val hubsFlow: Flow<List<HubsDocs>>
+val hubsFlow: Flow<List<HubsDoc>> = hubDao.getAllHubs()
 
-suspend fun addHub(hub: HubDocs) {
-hubdao.insert(hub)
+suspend fun addHub(hub: HubDoc) {
+hubDao.insert(hub)
 try {
     apiService.syncHub(hub)
 } catch (e: Exception) {
@@ -305,7 +298,7 @@ repository.hubsFlow
 }
 ```
 
-# 5. UI Layer Triggering Refresh
+# 5. UI Layer Triggering Refresh✓
 
 ```swipeRefreshLayout.setOnRefreshListener {
 viewModel.refreshHubs()
@@ -318,7 +311,7 @@ swipeRefreshLayout.isRefreshing = false
 
 
 
-# Unit Test Class
+# Unit Test Class√
 ```
 @ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
@@ -331,17 +324,18 @@ fun setup() {
   }
 
   @Test 
- fun `subtract returns correct sum`() {
-    viewModel.subtract(5,20)
+ fun `subtract returns correct result`() = runTest {
+    viewModel.subtract(20, 5)
    val result = viewModel.result.getorAwaitValue()
 assertEquals(15, result)
 }
 
 @Test 
- fun `division returns correct sum`() {
-    viewModel.divide(5,20)
+ fun `divide returns correct result`() = runTest {
+    viewModel.divide(20,5)
    val result = viewModel.result.getorAwaitValue()
 assertEquals(4, result)
+}
 }
 ````
 
