@@ -80,7 +80,7 @@ val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
 return maxMemory /
 ```
 
-# Usage in ViewModel and UI
+# Usage in ViewModel and UI✓
 
 ```
 class VideoViewModel (application : Application)  AndroidViewModel(application) {
@@ -99,7 +99,7 @@ viewModelScope.launch {
 }
 ```
 
-# Activity
+# Activity✓
 // Assuming i have a custom Videoview
 ```
 viewModel.videoBitmap.observe(viewLifecycleOwner) { bitmap ->
