@@ -91,7 +91,7 @@ viewModelScope.launch {
 
 // Activity
 viewModel.videoBitmap.observe(viewLifecycleOwner) { bitmap ->
-videoView.setImageBitmap(bitmap)
+videoView.setVideoBitmap(bitmap)
 ```
 
 # Practical Example: Custom Circular Progress View
