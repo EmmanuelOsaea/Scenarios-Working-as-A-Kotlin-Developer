@@ -147,7 +147,12 @@ canvas.drawArc(rectF, -100f, sweepangle, false, paintProgress)
 ```
 # Usage In Xml Layout
 
-
+```
+<com.example.customviews.CircularProgressiveView
+android: id 
+android: layout_width="160dp"
+android: layout_height="150dp" />
+```
 # Usage In Activity
 
 ```
