@@ -413,36 +413,36 @@ if (username == "user" && password == "pass") {
 ```
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.espresso
-import androidx.test.espresso
-import androidx.test.espresso
-import androidx.test.espresso
-import androidx.test.espresso
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import org junit.Rule
 import org junit.Test
 import org junit.runner.Runwith
 
 
-
-
-
-
-
-
-
 @Runwith(AndroidJUnit4::class)
-class LogoutActivity {
+class LogoutActivityTest {
 
 @get:Rule
 value activityRule = ActivityScenarioRule(LogoutActivity::class.java)
 
 @Test
-fun logoutSuccess_showsSuccessToast()
-onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
-onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
+fun logoutSuccess_showsSuccessToast() {
+onView(withId(R.id.edit.TextUsername)
+.perform(typeText("user"), closeSoftKeyboard())
+
+onView(withId(R.id.edit.TextPassword))
+.perform(typeText("pass"), closeSoftKeyboard())                                    
+.perform(click())                                                  
+
+onView(withId(R.id.buttonLogout))
+ .perform(click())
+
+
 ```
-
-
 
 
 # Reflecting 5years with Kotlin Coroutines and Flow
