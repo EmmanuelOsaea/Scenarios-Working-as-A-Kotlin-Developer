@@ -729,7 +729,7 @@ _result.value = 0
 }
 }
 ```
-# Unit Test Class
+# Unit Test Class✓
 ```
 import androidx.arch.core.executor.InstantTaskExecutorRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -742,7 +742,10 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
 
-private lateinit var ViewModel: CalculatorViewModel
+@get:Rule
+val InstantExecutorRule: InstantTaskExecutorRule()
+
+private lateinit var viewModel: CalculatorViewModel
 
 @Before 
 fun setup() {
@@ -751,17 +754,16 @@ fun setup() {
 
 
 @Test
-fun `subtract returns correct sum`() {
-    viewmodel.subtract(6, 10)
-  val result  = viewmodelgetorAwaotValue()
+fun `subtract returns correct result`() = runTest {
+    viewmodel.subtract(10, 6)
+  val result  = viewModel.result.getorAwaitValue()
   assertEquals(4, result)
    }
    
 @Test
-
-fun `division returns correct sum`() {
-    viewmodel.divide(10, 20)
-  val result  = viewmodelgetorAwaotValue()
+fun `divide returns correct result`() = runTest {
+    viewmodel.divide(20, 10)
+  val result  = viewModel.result.getorAwaitValue()
   assertEquals(2, result)
 }
 }
