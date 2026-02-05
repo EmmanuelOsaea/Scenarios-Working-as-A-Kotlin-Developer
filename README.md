@@ -636,14 +636,14 @@ if (username == "user" && password == "pass") {
 ```
 import androidx.test.ext.junit.runners.AndroidJunit4
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.espresso.Espresso.onView
-import androidx.test.ext.junit.rules.AndroidJunit4
-import androidx.test.ext.junit.rules.AndroidJunit4
-import androidx.test.ext.junit.rules.AndroidJunit4
-import androidx.test.ext.junit.rules.AndroidJunit4
-import androidx.test.ext.junit.rules.AndroidJunit4
-import androidx.test.ext.junit.rules.AndroidJunit4
-import androidx.test.ext.junit.rules.AndroidJunit4
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.ViewMatchers.withId
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import org.junit.unit.Rule         
+import org.junit.unit.Test       
+import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class LogoutActivityTest {
@@ -663,7 +663,7 @@ onView(withId(R.id.buttonLogout))
 .perform(click())                                                  
 
 onView(withText("Logout Succesful"))
-.inroot(ToastMatcher())
+.inRoot(ToastMatcher())
 .check(matches(isDisplayed()))
 }
 }
