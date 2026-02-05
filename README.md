@@ -730,8 +730,16 @@ _result.value = 0
 }
 ```
 # Unit Test Class
+```
+import androidx.arch.core.executor.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
-```@ExperimentalCoroutinesApi
+@ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
 
 private lateinit var ViewModel: CalculatorViewModel
