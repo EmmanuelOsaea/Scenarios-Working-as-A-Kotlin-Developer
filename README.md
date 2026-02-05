@@ -408,7 +408,7 @@ if (username == "user" && password == "pass") {
 }
 ```
 
-# Instrumentation Test Class
+# Instrumentation Test Class√
 
 ```
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -436,49 +436,64 @@ onView(withId(R.id.edit.TextUsername)
 
 onView(withId(R.id.edit.TextPassword))
 .perform(typeText("pass"), closeSoftKeyboard())                                    
-.perform(click())                                                  
-
+                                                  
 onView(withId(R.id.buttonLogout))
- .perform(click())
+.perfom(click())
 
-
-```
-
-
-# Reflecting 5years with Kotlin Coroutines and Flow
-
-# 1.Data Layer: Room with Flow
-```
-@Entity(tableName = "hub_docs") 
-data class Hubdoc(
-@promary key autogenerate
-title: String,
-val isDone: Boolean = false
+onView(withText("Logout successful"))
+ .inRoot(ToastMatcher())
+ .check(matches(isDisplayed()))
 }
+}
+```
+
+
+# Reflecting 5years with Kotlin Coroutines and Flow√
+
+# 1.Data Layer: Room with Flow√
+```
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
+@Entity(tableName = "hub_docs") 
+data class HuDdoc(
+@PrimaryKey (autoGenerate = true) val id: Int = 0,
+val title: String,
+val isDone: Boolean = false
+)
 
 @Dao
-interface Hubdoc {
-@Query("SELECT * FROM Hub_docs ORDER BY id DESC")
+interface HubDocDao {
+
+@Query("SELECT * FROM hub_docs ORDER BY id DESC")
 fun getAllHubdocs(): Flow<List<HubDoc>>
 
 @Insert(onConflict = onConflictStrategy.REPLACE)
-suspend fun insert (Hubdoc: doc)
+suspend fun insert (hubDoc: HubDoc)
 
 @Update
-suspend fun update (Hubdoc: doc)
+suspend fun update (hubDoc: HubDoc)
 
 @Delete
-suspend fun delete (Hub: doc)
+suspend fun delete (hubDoc: HubDoc)
 }
 ```
 
 
-# 4.UI layer: Collecting Stateflow and SharedFlow with Lifecycle Awareness
+# 4.UI layer: Collecting Stateflow and SharedFlow with Lifecycle Awareness√
 ```
+import android.os.Bundle
+import android.appcompat.app.AppCompatActivity
+import android.Lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.Recyclerview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
 class HubActivity: AppCompatActivity() {
 
-private lateinit var viewModel.HubViewModel
-private lateinit var adapter.HubAdapter
+private lateinit var viewModel: HubViewModel
+private lateinit var adapter: HubAdapter
 
 
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -487,25 +502,42 @@ setContentView(R.layout.activity_hub)
 
 adapter = HubAdapter(
  onToggleDone = { hub -> viewModel.toggleHubDone(hub) },
-onDelete = { hub -> viewModel.toggleHub(hub) }
+onDelete = { hub -> viewModel.deleteHub(hub) }
 )
 
 findViewById<RecyclerView>(R.id.recyclerView).apply {
-thisadapter = this@HubActivity.adapter
+this.adapter = this@HubActivity.adapter
 layoutManager = LinearLayoutManager(this@HubActivity)
 }
+
+lifecycleScope.launch
+  viewModel.uiState.collectLatest { hubs ->
+  adapter.submitList(hubs)
+}
+}
+}
+}
+
 ```
 
 
 
 
-
-
-
-# Unit Test Class
+# Unit Test Class√
 ```
+import android.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+
 @ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
+
+@get:Rule
+val instantTaskExecutorRule = InstantTaskExecutorRule()
 
 private lateinit var viewModel: CalculatorViewModel
 
@@ -515,31 +547,39 @@ fun setup() {
   }
 
   @Test 
- fun `subtract returns correct sum`() {
-    viewModel.subtract(5,20)
+ fun `subtract returns correct result`() {
+    viewModel.subtract(20,5)
    val result = viewModel.result.getorAwaitValue()
 assertEquals(15, result)
 }
 
 @Test 
- fun `division returns correct sum`() {
-    viewModel.divide(5,20)
+ fun `divide returns correct result`() = runTest {
+    viewModel.divide(20,5)
    val result = viewModel.result.getorAwaitValue()
 assertEquals(4, result)
+}
 }
 ````
 
 
 
 
-# Helper Extension to Observe LiveData in Tests
+# Helper Extension to Observe LiveData in Tests✓
 ```
-fun <T>LiveData<T>.getorAwaitValue(
-time: Long = 4
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException 
+
+fun <T> LiveData<T>.getorAwaitValue(
+time: Long = 4,
 timeUnit: TimeUnit.SECONDS
 ): T {
 var data: T? = null
-val latch = CountDownLatch(2)
+val latch = CountDownLatch(1)
+
 val observer = object : Observer<T> {
   override fun onChanged(o: T?) {
  data = o
@@ -549,27 +589,38 @@ val observer = object : Observer<T> {
  }
 
  this.observeForever(observer)
+
  if (!latch.await(time, timeUnit)) {
     throw TimeoutException("LiveData value was never set.")
 }
+
 @Suppress("UNCHECKED_CAST")
 return data as T
 }
 ```
 
-# Instrumentation Test for an Activity using Espresso
+# Instrumentation Test for an Activity using Espresso✓
 ```
+import androidx.os.Bundle
+import androidx.widget.Button
+import androidx.widget.EditToast
+import androidx.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
 class LogoutActivity : AppCompatActivity() {
+
 override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
 setContentView(R.layout.activity_logout)
 
 val logoutButton = findViewById <Button>(R.id.buttonLogout)
-val usernameInput = findViewById <Button>(R.id.buttonLogout)
-val passwordInput = findViewById <Button>(R.id.buttonLogout)
+val usernameInput = findViewById <EditText>(R.id.editTextUsername)    
+val passwordInput = findViewById <EditText>(R.id.editTextPassword)
 
 logoutButton.setOnclickListener {
-val usernameInput usernameInput.text.toString()
-val passwordInput passwordInput.text.toString()
+val username = usernameInput.text.toString()
+val password = passwordInput.text.toString()
+
 if (username == "user" && password == "pass") {
  Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show
  } else {
@@ -580,33 +631,40 @@ if (username == "user" && password == "pass") {
 }
 ```
 
-# Instrumentation Test Class
+# Instrumentation Test Class(Espresso) √
 
-```@Runwith(AndroidJUnit4::class)
-class LogoutActivity {
+```
+import androidx.test.ext.junit.runners.AndroidJunit4
+import androidx.test.ext.junit.rules.AndroidJunit4
+
+
+
+
+
+
+@RunWith(AndroidJUnit4::class)
+class LogoutActivityTest {
 
 @get:Rule
 value activityRule = ActivityScenarioRule(LogoutActivity::class.java)
 
 @Test
-fun logoutSuccess_showsSuccessToast()
-onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
-onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
+fun logoutSuccess_showsSuccessToast() {
+onView(withId(R.id.edit.TextUsername))
+   .perform(typeText("user"), closeSoftKeyboard())
+
+onView(withId(R.id.edit.TextPassword))
+.perform(typeText("pass"), closeSoftKeyboard())
+
+onView(withId(R.id.buttonLogout))
+.perform(click())                                                  
 
 onView(withText("Logout Succesful"))
 .inroot(ToastMatcher())
 .check(matches(isDisplayed()))
 }
-
-@Test
-fun logoutFailure_showsFailureToast()
-onView(withId(R.id.edit.TextUsername)).perform(typeText("user"), closeSoftKeyboard())
-onView(withId(R.id.edit.TextPassword)).perform(typeText("pass"), closeSoftKeyboard())                                    onView(withId(R.id.buttonLogout)).perform(click())                                                  closeSoftKeyboard())
-
-onView(withText("Logout Failed"))
-.inroot(ToastMatcher())
-.check(matches(isDisplayed()))
 }
+
 ```
 
 
