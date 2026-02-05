@@ -253,7 +253,7 @@ private val hubDao: HubDao,
 private val apiService: HubApiService
 ) {
 
-//fetch hubs from network and update local DB
+// Fetch hubs from network and update local DB
 suspend fun refreshHubs() {
 try {
 val remoteHubs = apiService.fetchHubs()
@@ -279,7 +279,7 @@ try {
 
 }
 ```
-# 4. ViewModel Example with Refresh Error Handling
+# 4. ViewModel Example with Refresh Error Handling✓
 
 ```class HubViewModel(private val repository: HubRepository) : ViewModel() {
 
@@ -342,14 +342,20 @@ assertEquals(4, result)
 
 
 
-# Helper Extension to Observe LiveData in Tests
+# Helper Extension to Observe LiveData in Tests√
 ```
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import java util.concurrent.Countdownlatch
+import java util.concurrent.TimeUnit
+import java util.concurrent.TimeoutException
+
 fun <T>LiveData<T>.getorAwaitValue(
 time: Long = 4
-timeUnit: TimeUnit.SECONDS
+timeUnit: TimeUnit = TimeUnit.SECONDS
 ): T {
 var data: T? = null
-val latch = CountDownLatch(2)
+val latch = CountDownLatch(1)
 val observer = object : Observer<T> {
   override fun onChanged(o: T?) {
  data = o
@@ -367,20 +373,31 @@ return data as T
 }
 ```
 
-# Instrumentation Test for an Activity using Espresso
+# Instrumentation Test for an Activity using Espresso√
 
 ```
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+
+
 class LogoutActivity : AppCompatActivity() {
+
 override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
 setContentView(R.layout.activity_logout)
 
 val logoutButton = findViewById <Button>(R.id.buttonLogout)
-val usernameInput = findViewById <Button>(R.id.buttonLogout)
-val passwordInput = findViewById <Button>(R.id.buttonLogout)
+val usernameInput = findViewById <EditText>(R.id.editTextUsername)
+val passwordInput = findViewById <EditText>(R.id.editTextPassword)
 
-logoutButton.setOnclickListener {
-val usernameInput usernameInput.text.toString()
-val passwordInput passwordInput.text.toString()
+logoutButton.setOnClickListener {
+val username = usernameInput.text.toString()
+val password = passwordInput.text.toString()
+
 if (username == "user" && password == "pass") {
  Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show
  } else {
@@ -393,7 +410,27 @@ if (username == "user" && password == "pass") {
 
 # Instrumentation Test Class
 
-```@Runwith(AndroidJUnit4::class)
+```
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.espresso
+import androidx.test.espresso
+import androidx.test.espresso
+import androidx.test.espresso
+import androidx.test.espresso
+import org junit.Rule
+import org junit.Test
+import org junit.runner.Runwith
+
+
+
+
+
+
+
+
+
+@Runwith(AndroidJUnit4::class)
 class LogoutActivity {
 
 @get:Rule
