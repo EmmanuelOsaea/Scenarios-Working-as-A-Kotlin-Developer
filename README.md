@@ -769,20 +769,28 @@ fun `divide returns correct result`() = runTest {
 }
 ```
 
-# UNIT and Instrumentation Test 
-# 1.Unit Test Mocking Coroutine & Flow Testing
-# Viewmodel with Dependency Injection and Flow
+# UNIT and Instrumentation Test ✓
+# 1.Unit Test Mocking Coroutine & Flow Testing✓
+# Viewmodel with Dependency Injection and Flow✓
 
-```class UserViewModel(private val userRepository: UserRepository): ViewModel() {
+```
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx coroutines.flow.MutableStateFlow
+import kotlinx coroutines.flow.Stateflow
+import kotlinx coroutines.flow.catch
+import kotlinx coroutines.flow.collect
+import kotlinx coroutines.launch
 
-private val _uiState = MutableStateFlow<UserState> (UserState.Loading
-val uiState: StateFlow<UserState> = _uiState.asStateFlow()
+class UserViewModel(private val userRepository: UserRepository): ViewModel() {
+
+private val _uiState = MutableStateFlow<UserState> (UserState.Loading)
+val uiState: StateFlow<UserState> = _uiState
 
 init {
 viewModelScope.launch {
-userRepository.getUserFlow ()
+userRepository.getUserFlow()
 .catch { e -> _uiState.value = UserState.Error(e.message ?: "Error not detected")}
-
 .collect { user -> _uiState.value = UserState.Success(user) }
 }
 }
@@ -790,9 +798,9 @@ userRepository.getUserFlow ()
 fun refreshUser() {
 viewModelScope.launch {
 try {
-userRepository.refreshUser()
+   userRepository.refreshUser()
 } catch (e: Exception) {
-_uiState.value = UserState.Error(e.message ?: "Refresh failed")
+ _uiState.value = UserState.Error(e.message ?: "Refresh failed")
 }
 }
 }
