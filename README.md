@@ -672,40 +672,60 @@ onView(withText("Logout Succesful"))
 
 
 
-# ToastMatcher Helper for Espresso
+# ToastMatcher Helper for Espresso✓
 
 ```
-class ToastMatcher TypesafeMatcher<Root>() {
-override fun describeTo( description : Description) {
-description.appendtext("is toast")
+import android.view.WindowManager
+import android.view.View
+import androidx.test.espresso.Root
+import org.hamcrest.Description
+import org.hamcrest.TypeSafeMatcher
+
+class ToastMatcher : TypesafeMatcher<Root>() {
+
+override fun describeTo(description : Description) {
+      description.appendtext("is toast")
 }
 
-public override func matchesSafely(root: Root): Boolean {
-val type = root.windowLayoutParams.TYPE_TOAST) {
-if (type == WindowManager.LayoutParams.TYPE_TOAST)
- val windowToken = root.decorview.windowToken
- val appToken = root.decorview.appWindowToken
- if (windowToken == appToken) {
+public override fun matchesSafely(root: Root): Boolean {
+val type = root.windowLayoutParams?.get()?.type 
+if (type == WindowManager.LayoutParams.TYPE_TOAST) {
+ val windowToken = root.decorView.windowToken
+ val appToken = root.decorView.appWindowToken
+ if (windowToken === appToken) {
  return true
 }
 }
 return false
+}
+}
 ```
 
 
 
-# Unit Test for a ViewModel using Kotlin, Coroutines and Junit
-# viewModel to Test
+# Unit Test for a ViewModel using Kotlin, Coroutines and Junit✓
+# ViewModel to Test✓
 
 ```
-class calculatorViewModel : ViewModel() {
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
+class CalculatorViewModel : ViewModel() {
+
 private val _result = MutableLiveData<Int>()
+private val _result = _result
 
 fun subtract(a: Int b: Int) {
-_result.value = a-b
+   _result.value = a - b
+}
 
 fun divide(a: Int b: Int) {
-_result.value = a÷b
+if (b != 0) {
+_result.value a / b
+} else {
+// Handle division by 0 when necessary
+_result.value = 0
+}
 }
 }
 ```
