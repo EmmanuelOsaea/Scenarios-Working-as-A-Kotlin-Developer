@@ -635,12 +635,15 @@ if (username == "user" && password == "pass") {
 
 ```
 import androidx.test.ext.junit.runners.AndroidJunit4
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.espresso.Espresso.onView
 import androidx.test.ext.junit.rules.AndroidJunit4
-
-
-
-
-
+import androidx.test.ext.junit.rules.AndroidJunit4
+import androidx.test.ext.junit.rules.AndroidJunit4
+import androidx.test.ext.junit.rules.AndroidJunit4
+import androidx.test.ext.junit.rules.AndroidJunit4
+import androidx.test.ext.junit.rules.AndroidJunit4
+import androidx.test.ext.junit.rules.AndroidJunit4
 
 @RunWith(AndroidJUnit4::class)
 class LogoutActivityTest {
