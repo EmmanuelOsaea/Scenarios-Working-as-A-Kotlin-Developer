@@ -307,10 +307,6 @@ swipeRefreshLayout.isRefreshing = false
 ```
 
 
-
-
-
-
 # Unit Test Class√
 ```
 @ExperimentalCoroutinesApi
@@ -923,8 +919,20 @@ assertEquals("Celia Wright", user.name)
 ```
 
 # Instrumentation Test with Espresso & Idling resource
-
 ```
+import androidx.test.ext.junit
+import androidx.test.ext.junit
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+
+
+
 @RunWith(AndroidJUnit4::class)
 class UserProfileActivityTest {
 
