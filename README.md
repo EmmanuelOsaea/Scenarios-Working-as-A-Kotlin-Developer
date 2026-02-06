@@ -813,7 +813,7 @@ data class Error(val message: String) UserState()
 }
 ```
 
-# Unit Test with MockK and Coroutine Test
+# Unit Test with MockK and Coroutine Test√
 
 ```
 import io.mockk.coEvery
@@ -823,16 +823,16 @@ import kotlines.coroutines.flow.flowOf
 import kotlines.coroutines.launch
 import kotlines.coroutines.test.advanceUntilIdle
 import kotlines.coroutines.test.runtest
-
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class UserViewModelTest {
 
-@get:Rule
-val coroutineRule = CoroutineTestRule()
-
 private val userRepository = mockk<UserRepository>()
-private lateinit var viewModel = UserViewModel 
+private lateinit var viewModel : UserViewModel 
 
 @Before
 fun setup() {
@@ -846,6 +846,7 @@ fun `uiState emits Success when repository emits user `() = runTest {
  
  coEvery { userRepository.getUserFlow() } returns userFlow
 viewModel = UserViewModel(userRepository)//reinitialise to collect flow
+
 val states = mutableListOf<UserState>()
 val job = launch {
 viewModel.uiState.toList(states)
@@ -855,13 +856,15 @@ advanceUntilIdle()
 
 assertTrue(states.contains(UserState.Success(testUser)))
 job.cancel()
+}
 
 @Test 
 fun `refreshUser calls repository and ui updates uiState on error`() = runTest {
 coEvery { userRepository.refreshUser() } throws Exception("Network issue")
+
 viewModel.refreshUser()
 
-advanceUntilIdle(
+advanceUntilIdle()
 assertEquals(UserState.Error("Network issue"), viewModel.uiState.value)
 }
 }
