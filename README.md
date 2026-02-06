@@ -866,13 +866,28 @@ assertEquals(UserState.Error("Network issue"), viewModel.uiState.value)
 }
 ```
 
-# Integration Test With MockWebServer and Room In Memory DB
+# Integration Test With MockWebServer and Room In Memory DB√
 ```
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProviderApp
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runtest
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebserver
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
+import retrofit2.Retrofit
+import retrofit2.Converter.gson.GsonConverterFactory
+
 @ExperimentalCoroutinesApi
 class UserRepositoryIntegrationTest {
+
   private lateinit var mockWebServer: MockWebServer
   private lateinit var apiService: UserApiService
-  private lateinit var database: Appdatabase
+  private lateinit var database: AppDatabase
   private lateinit var userDao: UserDao
   private lateinit var repository: UserRepository
 
@@ -882,23 +897,25 @@ class UserRepositoryIntegrationTest {
   mockWebServer.start()
 
  apiService = Retrofit.Builder()
- .baseurl(mockWebserver.url("/"))
+ .baseUrl(mockWebserver.url("/"))
  .addConverterFactory(GsonConverterFactory.create())
  .build()
  .create(UserApiService::class.java)
 
- data = RoominMemoryDatabaseBuilder (
+ database = Room.inMemoryDatabaseBuilder(
  ApplicationProvider.getApplicationContext(),
  AppDatabase::class.java
-).allowMainThreadQueries().build()
+)
+.allowMainThreadQueries()
+.build()
 
-userDao = database
+userDao = database.userDao()
 repository = UserRepository(apiService, userDao)
 }
 
 @After
 fun teardown() {
-mockWebserver.shutdown()
+mockWebServer.shutdown()
 database.close()
 }
 
@@ -906,7 +923,7 @@ database.close()
 fun `refreshUser fetches from network and updates database`() = runTest {
 val mockResponse = MockResponse()
            .setBody("""{"id":2, "name": "Celia Wright"}""")
-           .setResponseCode(400)
+           .setResponseCode(200)
 
 mockWebServer.enqueue(mockResponse)
 
@@ -918,19 +935,17 @@ assertEquals("Celia Wright", user.name)
 }
 ```
 
-# Instrumentation Test with Espresso & Idling resource
+# Instrumentation Test with Espresso & Idling resource✓
 ```
-import androidx.test.ext.junit
-import androidx.test.ext.junit
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-
 
 
 @RunWith(AndroidJUnit4::class)
@@ -939,11 +954,10 @@ class UserProfileActivityTest {
 @get:Rule
 val activityRule = ActivityScenarioRule(UserProfileActivity::class.java)
 
-
 @Test
-fun userNameIsDisplayedAfterLoading(){
-onView(withID(R.id.textViewUsername))
-.check(matches(withText("Celia Wright")))
+fun userNameIsDisplayedAfterLoading() {
+onView(withId(R.id.textViewUsername))
+ .check(matches(withText("Celia Wright")))
 }
 }
 ```
