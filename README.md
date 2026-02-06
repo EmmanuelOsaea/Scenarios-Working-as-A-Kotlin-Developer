@@ -815,7 +815,17 @@ data class Error(val message: String) UserState()
 
 # Unit Test with MockK and Coroutine Test
 
-```@ExperimentalCoroutinesApi
+```
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlines.coroutines.ExperimentalCoroutinesApi
+import kotlines.coroutines.flow.flowOf
+import kotlines.coroutines.launch
+import kotlines.coroutines.test.advanceUntilIdle
+import kotlines.coroutines.test.runtest
+
+
+@ExperimentalCoroutinesApi
 class UserViewModelTest {
 
 @get:Rule
